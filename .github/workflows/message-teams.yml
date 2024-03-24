@@ -1,0 +1,23 @@
+name: notify-teams
+
+on:
+  workflow_call:
+    inputs:
+      message:
+        required: true
+        type: string
+    secrets:
+      token:
+        required: true
+
+jobs:
+    message_teams:
+      runs-on: ubuntu-latest
+      name: send message to teams
+      steps:
+        - run: |
+            $body = '{"text":"${{ inputs.message }}"}'
+            Invoke-RestMethod -Method post -ContentType 'Application/Json' -Body $body -Uri ${{ secrets.TEAMS_WEBHOOK }}
+          shell: pwsh
+          
+          
