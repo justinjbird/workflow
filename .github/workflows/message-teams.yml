@@ -6,6 +6,9 @@ on:
       message:
         required: true
         type: string
+    secrets:
+      webook:
+        required: true
 
 jobs:
     message_teams:
@@ -14,7 +17,5 @@ jobs:
       steps:
         - run: |
             $body = '{"text":"${{ inputs.message }}"}'
-            Invoke-RestMethod -Method post -ContentType 'Application/Json' -Body $body -Uri ${{ secrets.TEAMS_WEBHOOK }}
+            Invoke-RestMethod -Method post -ContentType 'Application/Json' -Body $body -Uri ${{ secrets.webhook }}
           shell: pwsh
-          
-          
