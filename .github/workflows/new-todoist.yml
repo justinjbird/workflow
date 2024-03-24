@@ -1,4 +1,4 @@
-name: new-todoist
+name: create-task
 
 on:
   workflow_call:
@@ -30,42 +30,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create task in Todoist
-        run: |
-          # checks project_id
-          $data = @{
-            "project_id" = '${{ inputs.project_id }}'
-          } | ConvertTo-Json
-          $project_id = (curl -X POST https://api.todoist.com/rest/v2/projects --data $data -H "Content-Type: application/json" -H "Authorization: Bearer ${{ secrets.token }}"  -s -o response.txt -w "%{http_code}")
-          if ($project_id) {
-
-          }
-          # constructs payload
-          $data = @{
-            "content" = '${{ inputs.title }}'
-            "description" = '${{ inputs.description }}'
-            "labels" = '${{ inputs.labels }}' -split ','
-            "priority" = '${{ inputs.priority }}'
-            "due_string" = '${{ inputs.due_string }}'
-            "project_id" = '${{ inputs.project_id }}'
-          } | ConvertTo-Json
-
-          # escapes double quotes (because why? curl rejects it otherwise, something to explore later)
-          $data = $data -replace '"', '\"'
-          
-          # creates task, stores response in response.txt, collects response code in $output
-          $output = (curl -X POST https://api.todoist.com/rest/v2/tasks --data $data -H "Content-Type: application/json" -H "Authorization: Bearer ${{ secrets.token }}"  -s -o response.txt -w "%{http_code}")
-          
-          # checks output, returns response but fails if not 200
-          if ($output -eq 200) {
-          Get-Content response.txt
-          } else {
-              Write-Error "Unexpected response $output"
-              Get-Content response.txt
-          }
+        run: |       
+          /.github/pwsh/new-task.ps1 `
+            -title ${{ inputs.title }} `
+            -description ${{ inputs.description }} `
+            -labels ${{ inputs.labels }} `
+            -priority ${{ inputs.priority }} `
+            -due_string ${{ inputs.due_string }} `
+            -project_id ${{ inputs.project_id }} `
+            -token ${{ secrets.token }}
         shell: pwsh
-      - name: upload response.txt
-        uses: actions/upload-artifact@v2
-        with:
-          name: response.txt
-          path: response.txt
-        if: success() || failure()
