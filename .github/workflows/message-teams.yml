@@ -6,9 +6,6 @@ on:
       message:
         required: true
         type: string
-    secrets:
-      token:
-        required: true
 
 jobs:
     message_teams:
