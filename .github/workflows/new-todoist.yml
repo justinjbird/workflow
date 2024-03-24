@@ -30,7 +30,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create task in Todoist
-        run: |       
+        run: |
+          # checks project_id
+          $data = @{
+            "project_id" = '${{ inputs.project_id }}'
+          } | ConvertTo-Json
+          $project_id = (curl -X POST https://api.todoist.com/rest/v2/projects --data $data -H "Content-Type: application/json" -H "Authorization: Bearer ${{ secrets.token }}"  -s -o response.txt -w "%{http_code}")
+          if ($project_id) {
+
+          }
           # constructs payload
           $data = @{
             "content" = '${{ inputs.title }}'
@@ -55,3 +63,9 @@ jobs:
               Get-Content response.txt
           }
         shell: pwsh
+      - name: upload response.txt
+        uses: actions/upload-artifact@v2
+        with:
+          name: response.txt
+          path: response.txt
+        if: success() || failure()
