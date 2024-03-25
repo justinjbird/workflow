@@ -28,7 +28,7 @@ on:
 defaults:
   run:
     shell: pwsh
-    working-directory: ./.github/pwsh
+    working-directory: /.github/pwsh
 
 jobs:
   create-task:
