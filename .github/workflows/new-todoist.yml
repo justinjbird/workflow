@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Create task in Todoist
         run: |       
-          /.github/pwsh/new-task.ps1 `
+          ./.github/pwsh/new-task.ps1 `
             -title ${{ inputs.title }} `
             -description ${{ inputs.description }} `
             -labels ${{ inputs.labels }} `
