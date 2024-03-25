@@ -30,10 +30,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Where am I
+        shell: pwsh
         run: |
           Get-ChildItem -recurse
-        shell: pwsh
+        
       - name: Create task in Todoist
-        run: |       
-          ./new-task.ps1 -title ${{ inputs.title }} -description ${{ inputs.description }} -labels ${{ inputs.labels }} -priority ${{ inputs.priority }} -due_string ${{ inputs.due_string }} -project_id ${{ inputs.project_id }} -token ${{ secrets.token }}
         shell: pwsh
+        run: > 
+          ./.github/pwsh/new-task.ps1 
+            -title ${{ inputs.title }}
+            -description ${{ inputs.description }}
+            -labels ${{ inputs.labels }}
+            -priority ${{ inputs.priority }}
+            -due_string ${{ inputs.due_string }}
+            -project_id ${{ inputs.project_id }}
+            -token ${{ secrets.token }}
