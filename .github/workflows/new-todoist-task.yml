@@ -30,6 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create task in Todoist
+        shell: pwsh
         run: |
           $body = @{
             "content" = "${{ inputs.title }}"
