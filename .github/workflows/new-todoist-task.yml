@@ -32,24 +32,28 @@ jobs:
       - name: Create task in Todoist
         shell: pwsh
         run: |
-          $body = @{
-            "content" = "${{ inputs.title }}"
-            "description" = "${{ inputs.description }}"
-            "labels" = "${{ inputs.labels }}" -split ', |,'
-            "priority" = "${{ inputs.priority }}"
-            "due_string" = "${{ inputs.due_string }}"
-            "project_id" = "${{ inputs.project_id }}"
-          } | ConvertTo-Json
-          
-          $headers = @{
-            'Content-Type' = 'application/json'
-            'Authorization' = "Bearer ${{ secrets.token }}"
-          }
-          
-          $output = (
-            Invoke-RestMethod -uri https://api.todoist.com/rest/v2/tasks `
-              -method 'Post' `
-              -headers $headers `
-              -body $body
-          )
-          $output
+          Write-Host "Creating task in Todoist..."
+          ## # construct body
+          ## $body = @{
+          ##   "content" = "${{ inputs.title }}"
+          ##   "description" = "${{ inputs.description }}"
+          ##   "labels" = "${{ inputs.labels }}" -split ', |,'
+          ##   "priority" = "${{ inputs.priority }}"
+          ##   "due_string" = "${{ inputs.due_string }}"
+          ##   "project_id" = "${{ inputs.project_id }}"
+          ## } | ConvertTo-Json
+          ## 
+          ## # construct headers
+          ## $headers = @{
+          ##   'Content-Type' = 'application/json'
+          ##   'Authorization' = "Bearer ${{ secrets.token }}"
+          ## }
+          ## 
+          ## $output = (
+          ##   Invoke-RestMethod -uri https://api.todoist.com/rest/v2/tasks `
+          ##     -method 'Post' `
+          ##     -headers $headers `
+          ##     -body $body
+          ## )
+          ## $output
+## 
