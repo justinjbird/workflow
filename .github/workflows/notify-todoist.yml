@@ -1,4 +1,4 @@
-name: new-todoist-task
+name: notify-todoist
 
 on:
   workflow_call:
@@ -33,7 +33,6 @@ jobs:
         shell: pwsh
         run: |
           Write-Host "Creating task in Todoist..."
-          # construct body
           $body = @{
             "content" = "${{ inputs.title }}"
             "description" = "${{ inputs.description }}"
@@ -43,7 +42,6 @@ jobs:
             "project_id" = "${{ inputs.project_id }}"
           } | ConvertTo-Json
           
-          # construct headers
           $headers = @{
             'Content-Type' = 'application/json'
             'Authorization' = "Bearer ${{ secrets.token }}"
@@ -56,4 +54,3 @@ jobs:
               -body $body
           )
           $output
-## 
